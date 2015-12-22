@@ -12,7 +12,7 @@ public class Budget {
 	
 	private static Account login(){
 		Account user = null;
-		System.out.print("Would you like to login or register? Please type help if needed");
+		System.out.println("Would you like to login or register? Please type help if needed");
 	    // create a scanner so we can read the command-line input
 	    Scanner scanner = new Scanner(System.in);
 	    String loginOrNah = scanner.next();
@@ -43,13 +43,64 @@ public class Budget {
 		// TODO Auto-generated method stub
 		Scanner scanner = new Scanner(System.in);
 		String email;
-		Account user;
+		String firstName;
+		String lastName;
+		String username = null;
+		String password = null;
+		String temp;
+		
 		System.out.println("What is your email address?");
 		email = scanner.nextLine();
 		if(doesAccountExist(email)){
+			System.out.println("An account already exist with this email address!");
+		}
+		else{
+			System.out.println("What is your first name?");
+			firstName = scanner.nextLine();
 			
+			System.out.println("Whats your last name?");
+			lastName = scanner.nextLine();
+
+			for(boolean usernameSet = false; !usernameSet;  ){
+				System.out.println("Make a username?");
+				username = scanner.nextLine();
+				
+				if(doesUsernameExist()){
+					System.out.println("UserName: " + username + " already exist! Please try another username");
+				}
+				else{
+					usernameSet = true;
+					System.out.println("Username created successfully");
+				}
+			}
+			
+			for(boolean passwordSet = false; !passwordSet;  ){
+				System.out.println("Make a password?");
+				password = scanner.nextLine();
+				
+				System.out.println("Repeat password");
+				temp = scanner.nextLine();
+				if(!password.equals(temp)){
+					System.out.println("Passwords did not match");
+				}
+				else{
+					passwordSet = true;
+					System.out.println("Password created successfully");
+				}
+			}
+			AccountManager am = new AccountManager();
+			am.add_account(firstName, lastName, username, email, password);
+			
+			
+			am.print_account_info(1);
+				
 		}
 		
+	}
+
+	private static boolean doesUsernameExist() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	private static boolean doesAccountExist(String email) {
