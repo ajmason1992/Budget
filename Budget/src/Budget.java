@@ -3,14 +3,15 @@ import java.util.Scanner;
 
 public class Budget {
 	public static void main(String[] args){
-		Account account = login();
+		AccountManager am = new AccountManager();
+		Account account = login(am);
 		
 
 	    
 
 	}
 	
-	private static Account login(){
+	private static Account login(AccountManager am){
 		Account user = null;
 		System.out.println("Would you like to login or register? Please type help if needed");
 	    // create a scanner so we can read the command-line input
@@ -23,7 +24,7 @@ public class Budget {
 		    	login = true;
 		    }
 		    else if(loginOrNah.equalsIgnoreCase("register")){
-		    	registerAccount();
+		    	registerAccount(am);
 		    	System.out.println("register works!");
 		    }
 		    else if(loginOrNah.equalsIgnoreCase("help")){
@@ -39,12 +40,12 @@ public class Budget {
 		return user;
 	}
 
-	private static void registerAccount() {
+	private static void registerAccount(AccountManager am) {
 		// TODO Auto-generated method stub
 		Scanner scanner = new Scanner(System.in);
 		String email;
-		String firstName;
-		String lastName;
+		String firstName = null;
+		String lastName = null;
 		String username = null;
 		String password = null;
 		String temp;
@@ -88,15 +89,13 @@ public class Budget {
 					System.out.println("Password created successfully");
 				}
 			}
-			AccountManager am = new AccountManager();
-			am.add_account(firstName, lastName, username, email, password);
-			
-			
-			am.print_account_info(1);
-			am.generateCsvFile("../testBudget.csv");
+
 				
 		}
-		
+		am.add_account(firstName, lastName, username, email, password);
+
+		am.generateCsvFile("../testBudget.csv");
+		am.print_account_info(1);
 	}
 
 	private static boolean doesUsernameExist() {

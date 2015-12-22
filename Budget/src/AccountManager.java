@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 
+
+
+
 public class AccountManager {
 	
 	public AccountManager() {
@@ -15,11 +18,14 @@ public class AccountManager {
 	static HashMap<Integer, Account>  Accounts = new HashMap<Integer, Account>();  
 	private Integer accountNo;
 	static Account account;
+	private static int maxAccountParameters = 6;
 	
 	private static final String FILE_HEADER = "Account No.,First Name,Last Name,Username,"
 			+ "Email, Password";
 	private static final String COMMA_DELIMITER = ",";
 	private static final String NEW_LINE = "\n";
+	private String line = "";
+	private BufferedReader br;
 	
 	public void add_account(String firstName, String lastName,
 							String username, String email, String Password) {
@@ -43,10 +49,19 @@ public class AccountManager {
 		System.out.println("Account username: " + Accounts.get(accountNo).get_username());
 	}
 	
-	public void read_CSV_file(String fileName) throws FileNotFoundException {
+	public void read_CSV_file(String fileName) {
 		try{
-			BufferedReader br = new BufferedReader( new FileReader(fileName));
-		} catch(FileNotFoundException e) {
+			br = new BufferedReader( new FileReader(fileName));
+			line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				// use comma as separator
+				String[] field = line.split(COMMA_DELIMITER);
+				if(field.length == maxAccountParameters)
+					this.add_account(field[1], field[2], field[3], field[4], field[5]);
+				else
+					System.out.println("Error: Reading File");
+			}
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		

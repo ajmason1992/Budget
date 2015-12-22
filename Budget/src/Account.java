@@ -66,7 +66,7 @@ public class Account {
 		this.accountNumber = accountNumber;
 		this.firstName = firstName;
 		this.lastName = lastName; 
-		this.fullName = firstName + lastName;
+		this.fullName = firstName + " " + lastName;
 		this.username = username;
 		this.email = email;
 		this.password = password;
