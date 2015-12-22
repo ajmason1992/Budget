@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,7 +16,7 @@ public class AccountManager {
 	private Integer accountNo;
 	static Account account;
 	
-	private static final String FILE_HEADER = "Account No., First Name, Last Name, Username,"
+	private static final String FILE_HEADER = "Account No.,First Name,Last Name,Username,"
 			+ "Email, Password";
 	private static final String COMMA_DELIMITER = ",";
 	private static final String NEW_LINE = "\n";
@@ -40,10 +43,19 @@ public class AccountManager {
 		System.out.println("Account username: " + Accounts.get(accountNo).get_username());
 	}
 	
-	public void generateCsvFile(String FileName) {
+	public void read_CSV_file(String fileName) throws FileNotFoundException {
+		try{
+			BufferedReader br = new BufferedReader( new FileReader(fileName));
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void generateCsvFile(String fileName) {
 	
 		try {
-			FileWriter writer = new FileWriter(FileName);
+			FileWriter writer = new FileWriter(fileName);
 		
 			for(Integer key : Accounts.keySet()) {
 				account = Accounts.get(key);
