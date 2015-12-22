@@ -93,6 +93,7 @@ public class Budget {
 			
 			
 			am.print_account_info(1);
+			am.generateCsvFile("/Users/anthonymason/testBudget.csv");
 				
 		}
 		
