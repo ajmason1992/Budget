@@ -1,49 +1,78 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 
 public class Budget {
 	public static void main(String[] args){
 		AccountManager am = new AccountManager();
-		Account account = login(am);
+		am.read_CSV_file("../testInput.csv");
+		String lOrR = loginOrRegister();
+		
+		if(lOrR.equalsIgnoreCase("login")){
+			Account account = login(am);
+			logIntoAccount();
+		}
+		else if(lOrR.equalsIgnoreCase("register")){
+			System.out.println("Registration");
+			try {
+				Account account = registerAccount(am);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
+
+		
 		
 
 	    
 
-	}
 	
-	private static Account login(AccountManager am){
-		Account user = null;
+	
+	private static String loginOrRegister() {
+		// TODO Auto-generated method stub
 		System.out.println("Would you like to login or register? Please type help if needed");
 	    // create a scanner so we can read the command-line input
 	    Scanner scanner = new Scanner(System.in);
-	    String loginOrNah = scanner.next();
-	    for(boolean login = false; login == false;loginOrNah = scanner.next() ){
-		    if(loginOrNah.equalsIgnoreCase("login")){
-		    	//System.out.println("login works!");
-		    	logIntoAccount();
-		    	login = true;
+	    String loginOrReg = scanner.next();
+	    // Checking weather the user wants to register or login
+	    //Loops until either chose is made
+	    for(;; loginOrReg = scanner.next()){
+	    	
+		    if(loginOrReg.equalsIgnoreCase("login")){
+		    	break;
 		    }
-		    else if(loginOrNah.equalsIgnoreCase("register")){
-		    	registerAccount(am);
-		    	System.out.println("register works!");
+		    else if(loginOrReg.equalsIgnoreCase("register")){
+		    	break;
 		    }
-		    else if(loginOrNah.equalsIgnoreCase("help")){
+		    //help statement if user needs help choosing
+		    else if(loginOrReg.equalsIgnoreCase("help")){
 		    	System.out.print("-Type 'login' to log into account\n"
 		    					+ "-Type 'register to register\n");
 		    	System.out.println("Would you like to log in or register?");
 		    }
 		    else{
 		    	System.out.println("Invalid input:");
-		    	System.out.println("Would you like to log in or register?");
+		    	System.out.println("Would you like to login or register?");
 		    }
 	    }
+
+		return loginOrReg;
+	}
+
+	private static Account login(AccountManager am){
+		Account user = null;
+		System.out.println("Login");
 		return user;
 	}
 
-	private static void registerAccount(AccountManager am) {
+	private static Account registerAccount(AccountManager am) throws IOException {
 		// TODO Auto-generated method stub
-		Scanner scanner = new Scanner(System.in);
-		String email;
+		Scanner s = new Scanner(System.in);
+
+		String email = "";
 		String firstName = null;
 		String lastName = null;
 		String username = null;
@@ -51,20 +80,25 @@ public class Budget {
 		String temp;
 		
 		System.out.println("What is your email address?");
-		email = scanner.nextLine();
+		try {
+			email = s.nextLine();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("uh.. oh");
+		}
 		if(doesAccountExist(email)){
 			System.out.println("An account already exist with this email address!");
 		}
 		else{
 			System.out.println("What is your first name?");
-			firstName = scanner.nextLine();
+			firstName = s.nextLine();
 			
 			System.out.println("Whats your last name?");
-			lastName = scanner.nextLine();
+			lastName = s.nextLine();
 
 			for(boolean usernameSet = false; !usernameSet;  ){
 				System.out.println("Make a username?");
-				username = scanner.nextLine();
+				username = s.nextLine();
 				
 				if(doesUsernameExist()){
 					System.out.println("UserName: " + username + " already exist! Please try another username");
@@ -77,10 +111,10 @@ public class Budget {
 			
 			for(boolean passwordSet = false; !passwordSet;  ){
 				System.out.println("Make a password?");
-				password = scanner.nextLine();
+				password = s.nextLine();
 				
 				System.out.println("Repeat password");
-				temp = scanner.nextLine();
+				temp = s.nextLine();
 				if(!password.equals(temp)){
 					System.out.println("Passwords did not match");
 				}
@@ -92,10 +126,13 @@ public class Budget {
 
 				
 		}
-		am.add_account(firstName, lastName, username, email, password);
+		s.close();
+		Account account = am.add_account(firstName, lastName, username, email, password);
 
 		am.generateCsvFile("../testBudget.csv");
 		am.print_account_info(1);
+		int accountNumber =  account.get_accountNumber();
+		return am.Accounts.get(accountNumber);
 	}
 
 	private static boolean doesUsernameExist() {
