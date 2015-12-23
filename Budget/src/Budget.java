@@ -10,7 +10,12 @@ public class Budget {
 		
 		if(lOrR.equalsIgnoreCase("login")){
 			Account account = login(am);
-			logIntoAccount();
+			try {
+				logIntoAccount();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else if(lOrR.equalsIgnoreCase("register")){
 			System.out.println("Registration");
@@ -24,12 +29,6 @@ public class Budget {
 		}
 	}
 
-		
-		
-
-	    
-
-	
 	
 	private static String loginOrRegister() {
 		// TODO Auto-generated method stub
@@ -145,12 +144,46 @@ public class Budget {
 		return false;
 	}
 
-	private static Account logIntoAccount() {
+	private static Account logIntoAccount() throws IOException {
 		// TODO Auto-generated method stub
-		Scanner scanner = new Scanner(System.in);
-		Account user = null;
-		return user;
+		String username;
+		String password;
 		
+		Scanner scanner = new Scanner(System.in);
+		AccountManager user = null;
+		Account account = null;
+		System.out.println("Username or email: ");
+		username = scanner.nextLine();
+		for(;;username = scanner.nextLine()){
+			if(checkIfUsernameOrEmailaddress(username).equalsIgnoreCase("us")){
+				if(user.Accounts.containsKey(username)){
+					
+				}
+			break;
+			}
+			else if(checkIfUsernameOrEmailaddress(username).equalsIgnoreCase("ed")){
+			break;
+			}
+			else if(checkIfUsernameOrEmailaddress(username).equalsIgnoreCase("reg")){
+				registerAccount(user);
+				System.out.println("Username or email: ");
+			}
+			else{
+				System.out.println("User does not exist please try again. Type register to register.");
+				System.out.println("Username or email: ");
+			}
+		}
+		//remember to add return statement
+		//int accountNumber =  user.get_account(accountNumber);
+		
+		return account;
+	}
+
+
+
+	private static String checkIfUsernameOrEmailaddress(String username) {
+		return "ed";
+		// TODO Auto-generated method stub
 		
 	}
 	
