@@ -27,12 +27,13 @@ public class AccountManager {
 	private String line = "";
 	private BufferedReader br;
 	
-	public void add_account(String firstName, String lastName,
+	public Account add_account(String firstName, String lastName,
 							String username, String email, String Password) {
 		accountNo++;
 		
 		Account account = new Account(accountNo, firstName, lastName, username, email,  Password);
 		Accounts.put(accountNo, account);
+		return account;
 	}
 	
 	public void delete_account(Integer accountNo) {
@@ -63,6 +64,7 @@ public class AccountManager {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			return;
 		}
 		
 	}
@@ -90,8 +92,9 @@ public class AccountManager {
 				writer.append(account.get_password());
 				writer.append(NEW_LINE);
 				writer.flush();
-				writer.close();
+
 			}
+			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
