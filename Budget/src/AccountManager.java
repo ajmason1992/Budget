@@ -31,13 +31,13 @@ public class AccountManager {
 							String username, String email, String Password) {
 		accountNo++;
 		
-		Account account = new Account(accountNo, firstName, lastName, username, email,  Password);
+		this.account = new Account(accountNo, firstName, lastName, username, email,  Password);
 		Accounts.put(accountNo, account);
 		return account;
 	}
 	
 	public void delete_account(Integer accountNo) {
-		Accounts.remove(accountNo);
+	 	Accounts.remove(accountNo);
 	}
 	
 	public Account get_account(Integer accountNo) {
@@ -67,6 +67,27 @@ public class AccountManager {
 			return;
 		}
 		
+	}
+	
+	public Account login(String username, String password) {
+		boolean accountFound = false;
+		Account activeAccount = null;
+		for(Integer key : Accounts.keySet()) {
+			if(Accounts.get(key).get_username() == username) {
+				accountFound = true;
+				if(Accounts.get(key).get_password() == password) {
+					activeAccount = Accounts.get(key);
+					break;
+				}
+				else {
+					System.out.println("Incorrect password"); 
+				}
+			}			
+		}
+		if(!accountFound) {
+			System.out.println("Username does not exists");
+		}
+		return activeAccount;
 	}
 	
 	public void generateCsvFile(String fileName) {
