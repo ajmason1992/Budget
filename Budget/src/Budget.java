@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.util.Scanner;
+import java.net.*;
 
+import javax.mail.internet.*;
 
 public class Budget {
 	public static void main(String[] args){
@@ -49,7 +51,7 @@ public class Budget {
 		    //help statement if user needs help choosing
 		    else if(loginOrReg.equalsIgnoreCase("help")){
 		    	System.out.print("-Type 'login' to log into account\n"
-		    					+ "-Type 'register to register\n");
+		    					+ "-Type 'register' to register\n");
 		    	System.out.println("Would you like to log in or register?");
 		    }
 		    else{
@@ -78,13 +80,21 @@ public class Budget {
 		String password = null;
 		String temp;
 		
-		System.out.println("What is your email address?");
-		try {
+		boolean email_valid = false;
+		
+		while(!email_valid) {
+			System.out.println("What is your email address?");
 			email = s.nextLine();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("uh.. oh");
+			email_valid = isValidEmailAddress(email);
 		}
+		
+//		try {
+//			email = s.nextLine();
+//			isValidEmailAddress(email);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			System.out.println("uh.. oh");
+//		}
 		if(doesAccountExist(email)){
 			System.out.println("An account already exist with this email address!");
 		}
@@ -178,8 +188,18 @@ public class Budget {
 		
 		return account;
 	}
-
-
+	
+	private static boolean isValidEmailAddress(String email) {
+		boolean result = true;
+		try {
+			InternetAddress emailAddr = new InternetAddress(email);
+			emailAddr.validate();
+		} catch (AddressException ex) {
+			System.out.println("Email Address is not valid.");
+			result = false;
+		}
+		return result;
+	}
 
 	private static String checkIfUsernameOrEmailaddress(String username) {
 		return "ed";
