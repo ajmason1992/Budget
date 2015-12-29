@@ -70,24 +70,49 @@ public class AccountManager {
 	}
 	
 	public Account login(String username, String password) {
+		//boolean accountFound = false;
+		//Account activeAccount;
+
+		Account activeAccount = doesUsernameExist(username);
+		if(activeAccount != null){
+			if(activeAccount.get_password().equals(password)) {
+				//System.out.println("Welcome" + activeAccount.get_fullName());
+				System.out.println("Welcome");
+			}
+			else {
+				System.out.println("Incorrect password"); 
+			}
+		}
+		else{
+			System.out.println("Username does not exists");
+		}
+		
+		return activeAccount;
+	}
+	
+	static Account doesUsernameExist(String username) {
+		// TODO Auto-generated method stub
+		Account activeAccount = null;
+		for(Integer key : Accounts.keySet()) {
+			if(Accounts.get(key).get_username().equalsIgnoreCase(username)) {
+				activeAccount = Accounts.get(key);
+			}			
+		}
+
+		return activeAccount;
+	}
+
+	static boolean doesAccountExist(String email) {
+		// TODO Auto-generated method stub
 		boolean accountFound = false;
 		Account activeAccount = null;
 		for(Integer key : Accounts.keySet()) {
-			if(Accounts.get(key).get_username() == username) {
+			if(Accounts.get(key).get_email().equalsIgnoreCase(email)) {
 				accountFound = true;
-				if(Accounts.get(key).get_password() == password) {
-					activeAccount = Accounts.get(key);
-					break;
-				}
-				else {
-					System.out.println("Incorrect password"); 
-				}
 			}			
 		}
-		if(!accountFound) {
-			System.out.println("Username does not exists");
-		}
-		return activeAccount;
+
+		return accountFound;
 	}
 	
 	public void generateCsvFile(String fileName) {

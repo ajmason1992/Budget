@@ -7,13 +7,12 @@ import javax.mail.internet.*;
 public class Budget {
 	public static void main(String[] args){
 		AccountManager am = new AccountManager();
-		am.read_CSV_file("../testInput.csv");
+		am.read_CSV_file("../testBudget.csv");
 		String lOrR = loginOrRegister();
 		
 		if(lOrR.equalsIgnoreCase("login")){
-			Account account = login(am);
 			try {
-				logIntoAccount();
+				Account account = logIntoAccount();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -63,15 +62,10 @@ public class Budget {
 		return loginOrReg;
 	}
 
-	private static Account login(AccountManager am){
-		Account user = null;
-		System.out.println("Login");
-		return user;
-	}
-
 	private static Account registerAccount(AccountManager am) throws IOException {
 		// TODO Auto-generated method stub
 		Scanner s = new Scanner(System.in);
+		AccountManager user = null;
 
 		String email = "";
 		String firstName = null;
@@ -95,7 +89,7 @@ public class Budget {
 //			e.printStackTrace();
 //			System.out.println("uh.. oh");
 //		}
-		if(doesAccountExist(email)){
+		if(user.doesAccountExist(email)){
 			System.out.println("An account already exist with this email address!");
 		}
 		else{
@@ -109,12 +103,12 @@ public class Budget {
 				System.out.println("Make a username?");
 				username = s.nextLine();
 				
-				if(doesUsernameExist()){
+				if(user.doesUsernameExist(username) != null){
 					System.out.println("UserName: " + username + " already exist! Please try another username");
 				}
 				else{
 					usernameSet = true;
-					System.out.println("Username created successfully");
+					System.out.println("Username is available");
 				}
 			}
 			
@@ -144,47 +138,27 @@ public class Budget {
 		return am.Accounts.get(accountNumber);
 	}
 
-	private static boolean doesUsernameExist() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	private static boolean doesAccountExist(String email) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	private static Account logIntoAccount() throws IOException {
 		// TODO Auto-generated method stub
-		String username;
-		String password;
+		String username = "";
+		String password = "";
+		boolean loggedIn = false;
 		
 		Scanner scanner = new Scanner(System.in);
-		AccountManager user = null;
+		AccountManager user = new AccountManager();
 		Account account = null;
-		System.out.println("Username or email: ");
-		username = scanner.nextLine();
-		for(;;username = scanner.nextLine()){
-			if(checkIfUsernameOrEmailaddress(username).equalsIgnoreCase("us")){
-				if(user.Accounts.containsKey(username)){
-					
-				}
-			break;
-			}
-			else if(checkIfUsernameOrEmailaddress(username).equalsIgnoreCase("ed")){
-			break;
-			}
-			else if(checkIfUsernameOrEmailaddress(username).equalsIgnoreCase("reg")){
-				registerAccount(user);
-				System.out.println("Username or email: ");
-			}
-			else{
-				System.out.println("User does not exist please try again. Type register to register.");
-				System.out.println("Username or email: ");
+		
+		while(!loggedIn ){
+			System.out.println("Username: ");
+			username = scanner.nextLine();
+			
+			System.out.println("Password: ");
+			password = scanner.nextLine();
+			account = user.login(username, password);
+			if(account != null){
+				loggedIn = true;
 			}
 		}
-		//remember to add return statement
-		//int accountNumber =  user.get_account(accountNumber);
 		
 		return account;
 	}
